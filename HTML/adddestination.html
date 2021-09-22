@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <H1>Hello</H1>
+    <form action = "adddestination" method="post">
+        {% csrf_token %}  
+        
+        <input type="text" name="place_name" placeholder="Place Name"><br>
+        <input type="text" name="description" placeholder="Description"><br>
+        <input type="text" name="price" placeholder="Price"><br>
+        <input type="file"  name="filename">
+        in offer<input type="radio" name="offer" value="True">
+        not in offer<input type="radio" name="offer" value="False"><br>
+        
+        <input type="submit">
+        </form>
+    
+</body>
+</html>

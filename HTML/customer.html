@@ -1,0 +1,83 @@
+{% extends "main.html"%}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Customer:</h5>
+            <hr>
+            
+                <a class="btn btn-outline-success btn-sm btn-block " href="">Update Customer</a>
+            
+           <br>
+                <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'create_order' customer.id %}">Place Order</a>
+            
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Customer Information</h5>
+            <hr>
+                <p>Name: {{customer.name}}</p>
+                <p>Email: {{customer.email}}</p>
+                <p>Phone: {{customer.phone}}</p>
+                
+            
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Total Order</h5>
+            <hr>
+        <h1 style="text-align: center;padding: 10px">{{total_order}}</h1>  
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+        <form method="get">
+            <input class="form-label" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </form>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+      <hr>
+      
+    
+       <table class="table table-sm">
+        
+          <tr>
+            
+            <th>product</th>
+            <th >Category</th>
+            <th >Date Order</th>
+            <th >Satus</th>
+            <th >Update</th>
+            <th >Revome</th>
+          </tr>
+          {% for item in order %}
+          <tr>
+              <th>{{item.product}}</th>
+              <th>{{item.product.category}}</th>
+              <th>{{item.date_created}}</th>
+              <th>{{item.status}}</th>
+              <th><a class="btn btn-outline-dark btn-sm btn-block"  href="{% url 'update_order' item.id%}">Update</th>
+              <th><a class="btn btn-outline-danger btn-sm" href="{% url 'delete_order' item.id%}">Remove</th>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+</div>
+
+
+{% endblock %}
