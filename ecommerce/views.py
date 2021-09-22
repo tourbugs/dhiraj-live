@@ -5,23 +5,22 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate , login, logout
 from django.contrib.auth.decorators import login_required
+from .decorators import unauthenticated_user, allowed_users
 
 # Create your views here.
+@unauthenticated_user
 def registration(request):
-    if request.user.is_authenticated:
-        return redirect('homepage')
-    else:
-        form = CreateUserForm()
-        if request.method =='POST':
-            form = CreateUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                user = form.cleaned_data.get('username')
-                messages.success(request, 'Account was created for ' + user )
-                return redirect('login')
+    form = CreateUserForm()
+    if request.method =='POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + user )
+            return redirect('login')
 
-        context = {'form':form}
-        return render(request,'registration.html',context)
+    context = {'form':form}
+    return render(request,'registration.html',context)
 
 def loginauth(request):
     if request.user.is_authenticated:
@@ -46,6 +45,7 @@ def logoutPage(request):
     return redirect('login')
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def homepage(request):
     customers = Customer.objects.all()
 
@@ -61,11 +61,13 @@ def homepage(request):
     return render(request,'homepage.html', context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def product(request):
     products = Product.objects.all()
     return render(request,'product.html',{'products': products})
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def customer(request,pk):
     current_customer = Customer.objects.get(id=pk)
     current_user_order = current_customer.order_set.all()
@@ -74,6 +76,7 @@ def customer(request,pk):
     return render(request,'customer.html',context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def createOrder(request,pk):
     customer = Customer.objects.get(id=pk)
     form = OrderForm(initial={'customer':customer})
@@ -87,6 +90,7 @@ def createOrder(request,pk):
     return render(request,'create_order.html', context )
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def UpdateOrder(request,pk): 
     order =Order.objects.get(id=pk)
     form = OrderForm(instance=order)
@@ -100,6 +104,7 @@ def UpdateOrder(request,pk):
     return render(request,'create_order.html', context )
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def DeleteOrder(request,pk):
     order =Order.objects.get(id=pk)
     if request.method =='POST':
