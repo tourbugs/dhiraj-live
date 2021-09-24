@@ -20,7 +20,11 @@ def registration(request):
 
             group = Group.objects.get(name='customer')
             user.groups.add(group)
-            
+
+            Customer.objects.create(
+                user=user,
+                )
+
             messages.success(request, 'Account was created for ' + username )
             return redirect('login')
 
@@ -118,5 +122,12 @@ def DeleteOrder(request,pk):
     context={'item':order}
     return render(request, 'deleteorder.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def userinterface(request):
-    return render(request, 'user.html')
+    orders = request.user.customer.order_set.all()
+    total_order = orders.count()
+    delivered = orders.filter(status='Delivered').count()
+    pending = orders.filter(status='Pending').count()
+    context= {'order': orders ,'total_order':total_order,'orders':orders,'delivered':delivered,'pending':pending}
+    return render(request, 'user.html', context)
