@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import OrderForm, CreateUserForm
+from .forms import OrderForm, CreateUserForm, CustomerForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate , login, logout
@@ -131,3 +131,15 @@ def userinterface(request):
     pending = orders.filter(status='Pending').count()
     context= {'order': orders ,'total_order':total_order,'orders':orders,'delivered':delivered,'pending':pending}
     return render(request, 'user.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
+def accountSetting(request):
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+    if request.method == 'POST':
+        form =CustomerForm(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+    context = {'form':form}
+    return render(request, 'accountsettings.html', context)

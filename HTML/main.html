@@ -38,6 +38,9 @@
               <li class="nav-item">
                 <a class="nav-link active" href="{% url 'product' %}">Product</a>
               </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'account' %}">Setting</a>
               {% endif %}
             </ul>
             
