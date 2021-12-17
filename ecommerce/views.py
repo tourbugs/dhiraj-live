@@ -26,7 +26,7 @@ def registration(request):
                 )
 
             messages.success(request, 'Account was created for ' + username )
-            return redirect('login')
+            return render(request,'welcome.html')
 
     context = {'form':form}
     return render(request,'registration.html',context)
