@@ -17,16 +17,17 @@ def registration(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-
+            
             group = Group.objects.get(name='customer')
             user.groups.add(group)
 
             Customer.objects.create(
                 user=user,
+                name=user.username,
                 )
-            print("ok----ok-----ok----ok-----ok-----ok")
-            # messages.success(request, 'Account was created for ' + username )
-            return render(request,'welcome.html')
+
+            messages.success(request, 'Account was created for ' + username )
+            return redirect('login')
 
     context = {'form':form}
     return render(request,'registration.html',context)
@@ -48,7 +49,6 @@ def loginauth(request):
                 messages.info(request,'Username or Password is incorrect')
                 
         return render(request, 'login.html')
-        
 
 def logoutPage(request):
     logout(request)
