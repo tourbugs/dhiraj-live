@@ -47,7 +47,8 @@ def loginauth(request):
             else:
                 messages.info(request,'Username or Password is incorrect')
                 
-        return render(request, 'login.html')
+        # return render(request, 'login.html')
+        return render(request,'welcome.html')
 
 def logoutPage(request):
     logout(request)
