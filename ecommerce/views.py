@@ -24,8 +24,8 @@ def registration(request):
             Customer.objects.create(
                 user=user,
                 )
-
-            messages.success(request, 'Account was created for ' + username )
+            print("ok----ok-----ok----ok-----ok-----ok")
+            # messages.success(request, 'Account was created for ' + username )
             return render(request,'welcome.html')
 
     context = {'form':form}
@@ -47,8 +47,8 @@ def loginauth(request):
             else:
                 messages.info(request,'Username or Password is incorrect')
                 
-        # return render(request, 'login.html')
-        return render(request,'welcome.html')
+        return render(request, 'login.html')
+        
 
 def logoutPage(request):
     logout(request)
